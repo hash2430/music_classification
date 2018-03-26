@@ -10,7 +10,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-data_path = './dataset/'
+data_path = '/home/sunghee/PycharmProjects/music_classification/example_dataset/'
 mfcc_path = './mfcc/'
 
 MFCC_DIM = 20
@@ -44,7 +44,7 @@ def mean_mfcc(dataset='train'):
         
 if __name__ == '__main__':
     train_data = mean_mfcc('train')
-    valid_data = mean_mfcc('valid')
+    valid_data = mean_mfcc('validation')
     test_data = mean_mfcc('test')
 
     plt.figure(1)

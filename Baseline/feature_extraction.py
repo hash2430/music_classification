@@ -4,13 +4,16 @@
 # 
 # Juhan Nam
 #
+# 코드가 굉장히 procedural programming으로 짜여 있다.
+# 각 module을 run해야 한다.
+# 코드가 procedural한 관계로, 시간 측정은 파일io 시간과 알고리즘 돌리는 시간을 구분하지 않는 것으로 했다
 
-import sys
 import os
 import numpy as np
 import librosa
+from Baseline import util
 
-data_path = '/home/sunghee/Documents/GCT634/HW1_dataset/dataset/'
+data_path = '/home/sunghee/PycharmProjects/music_classification/example_dataset/'
 mfcc_path = './mfcc/'
 
 MFCC_DIM = 20
@@ -34,8 +37,8 @@ def extract_mfcc(dataset='train'):
 
         ##### Method 1
         mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=MFCC_DIM)
-        
-        ##### Method 2 
+
+        ##### Method 2
         """
         # STFT
         S = librosa.core.stft(y, n_fft=1024, hop_length=512, win_length=1024)
@@ -66,9 +69,24 @@ def extract_mfcc(dataset='train'):
     f.close();
 
 if __name__ == '__main__':
-    extract_mfcc(dataset='train')                 
-    extract_mfcc(dataset='valid')                                  
-    extract_mfcc(dataset='test')
+    #training
+    task = 'feature extraction'
+    phase = 'train'
+    util.start_measure(task + ' ' + phase)
+    extract_mfcc(dataset=phase)
+    util.finish_measure()
+
+    #validation
+    phase = 'validation'
+    util.start_measure(task + ' ' + phase)
+    extract_mfcc(dataset=phase)
+    util.finish_measure()
+
+    #test
+    phase = 'test'
+    util.start_measure(task + ' ' + phase)
+    extract_mfcc(dataset=phase)
+    util.finish_measure()
 
 
 

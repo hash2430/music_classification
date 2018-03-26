@@ -5,11 +5,9 @@
 # Juhan Nam
 #
 
-import sys
-import os
-import numpy as np
-import librosa
-from feature_summary import *
+from Baseline import util
+
+from Baseline.feature_summary import *
 
 from sklearn.linear_model import SGDClassifier
 
@@ -33,7 +31,7 @@ if __name__ == '__main__':
 
     # load data 
     train_X = mean_mfcc('train')
-    valid_X = mean_mfcc('valid')
+    valid_X = mean_mfcc('validation')
     test_X = mean_mfcc('test')
 
     # label generation
@@ -54,6 +52,8 @@ if __name__ == '__main__':
     valid_X = valid_X/(train_X_std + 1e-5)
 
     # training model
+    # validation하여 hyper parameter를 선택하는 validation 과정까지 포함한 시간을 train time으로 쳐보았다
+    util.start_measure("train + validation")
     alphas = [0.0001, 0.001, 0.01, 0.1, 1, 10]
 
     model = []
@@ -62,11 +62,12 @@ if __name__ == '__main__':
         clf, acc = train_model(train_X, train_Y, valid_X, valid_Y, a)
         model.append(clf)
         valid_acc.append(acc)
-        
     # choose the model that achieve the best validation accuracy
     final_model = model[np.argmax(valid_acc)]
+    util.finish_measure()
 
     # now, evaluate the model with the test set
+    util.start_measure("test")
     test_X = test_X.T
     test_X = test_X - train_X_mean
     test_X = test_X/(train_X_std + 1e-5)
@@ -74,4 +75,5 @@ if __name__ == '__main__':
 
     accuracy = np.sum((test_Y_hat == test_Y))/200.0*100.0
     print('test accuracy = ' + str(accuracy) + ' %')
+    util.finish_measure()
 
