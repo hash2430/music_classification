@@ -1,15 +1,24 @@
 # input: wav file, list of wav file names
 # output: mfcc feature file for each wav
+#ToDo: class가 dir 멤버를 constructor로부터 받아서 사용하도록 고치기
+#ToDo: phase를 직접 입력받지 않ㄱ소 Path 모듈의 파라미터를 참조하게 하기
+from NotRunnables import  Path
 
 import librosa
 import os
 import numpy as np
-from Path import data_path, mfcc_path
+#from NotRunnables import *
 
 MFCC_DIM = 20
 class FeatureExtraction():
-    def extract_mfcc1(dataset='train'):
-        f = open(data_path + dataset + '_list.txt', 'r')
+    dir = ""
+
+    def __init__(self, dir):
+        self.dir = dir
+
+    def extract_mfcc1(self, phase):
+        list_file = Path.feature_file_list(Path.data[phase])
+        f = open(list_file, 'r')
 
         i = 0
         for file_name in f:
@@ -19,8 +28,7 @@ class FeatureExtraction():
                 print(i)
 
             # load audio file
-            file_name = file_name.rstrip('\n')
-            file_path = data_path + file_name
+            file_path = Path.feature_file(file_name)
             # print file_path
             y, sr = librosa.load(file_path, sr=22050)
 
@@ -29,7 +37,7 @@ class FeatureExtraction():
 
             # save mfcc as a file
             file_name = file_name.replace('.wav', '.npy')
-            save_file = mfcc_path + file_name
+            save_file = Path.mfcc_file(self.dir, file_name)
 
             if not os.path.exists(os.path.dirname(save_file)):
                 os.makedirs(os.path.dirname(save_file))
@@ -37,8 +45,8 @@ class FeatureExtraction():
 
         f.close();
 
-    def extract_mfcc2(dataset='train'):
-        f = open(data_path + dataset + '_list.txt', 'r')
+    def extract_mfcc2(self, phase):
+        f = open(Path.feature_file_list(Path.data[phase]), 'r')
 
         i = 0
         for file_name in f:
@@ -48,8 +56,7 @@ class FeatureExtraction():
                 print(i)
 
             # load audio file
-            file_name = file_name.rstrip('\n')
-            file_path = data_path + file_name
+            file_path = Path.feature_file(file_name)
 
             # print file_path
             y, sr = librosa.load(file_path, sr=22050)
@@ -74,7 +81,7 @@ class FeatureExtraction():
 
             # save mfcc as a file
             file_name = file_name.replace('.wav', '.npy')
-            save_file = mfcc_path + file_name
+            save_file = Path.mfcc_file(self.dir, file_name)
 
             if not os.path.exists(os.path.dirname(save_file)):
                 os.makedirs(os.path.dirname(save_file))

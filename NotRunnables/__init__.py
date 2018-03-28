@@ -1,1 +1,2 @@
-__all__=['Counter', 'InstrumentClassification', 'Path', 'Test', 'Train', 'Validate']
+__all__ = ['Counter', 'FeatureExtraction', 'FeatureSummary', 'InstrumentClassification',
+         'Normalize', 'Path', 'Test', 'Train', 'Validate']
