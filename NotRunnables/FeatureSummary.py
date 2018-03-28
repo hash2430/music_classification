@@ -49,6 +49,7 @@ class FeatureSummary():
         return mfcc_mat #(mfcc_dim, num of files)
 
     # spectrogram visualization function
+    # todo: 그림 이쁘게 그리기
     def visualize(self, n):
         phase = Path.data[n]
         mean_mfcc_file = Path.mean_mfcc_file(self.dir, phase)
