@@ -1,7 +1,7 @@
 import numpy as np
 # experiment root path
 method1_path = "/home/sunghee/PycharmProjects/music_classification/method1_is_baseline/"
-method2_path = "/home/sunghee/PycharmProjects/music_classification/method2/"
+method2_path = "/home/sunghee/PycharmProjects/music_classification/method2_svm_/"
 
 # input data path
 data_path = '/home/sunghee/PycharmProjects/music_classification/example_dataset/'

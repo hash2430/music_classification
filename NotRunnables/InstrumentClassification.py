@@ -29,7 +29,7 @@ class InstrumentClassification():
         hyper_params = [0.0001, 0.001, 0.01, 0.1, 1, 10]
         models = []
         for hyper_param in hyper_params:
-            model = train.train_model(hyper_param)
+            model = train.linear_svm(hyper_param)
             models.append(model)
 
 

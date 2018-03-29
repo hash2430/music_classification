@@ -3,6 +3,8 @@
 from NotRunnables import Path, Normalize
 
 from sklearn.linear_model import SGDClassifier
+from sklearn import svm
+
 import numpy as np
 #from NotRunnables import *
 
@@ -13,7 +15,7 @@ class Train():
     def __init__(self, dir):
         self.dir = dir
 
-    def train_model(self, hyper_param):
+    def linear_svm(self, hyper_param):
         # load training feature, validation feature
         train_x_file = Path.mean_mfcc_file(self.dir, Path.data[0])
         train_X = np.load(train_x_file)
@@ -38,3 +40,7 @@ class Train():
         clf.fit(train_X, train_Y)
 
         return clf
+
+    # def nonlinear_svm(self):
+    #
+    #     svm.NuSVC()
