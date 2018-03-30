@@ -7,7 +7,7 @@ import NotRunnables.Test as Test
 import NotRunnables.Train as Train
 import NotRunnables.Validate as Validate
 
-class InstrumentClassification():
+class LinearModel():
     dir = ""
     def __init__(self, dir):
         self.dir = dir
@@ -44,5 +44,8 @@ class InstrumentClassification():
         test = Test.Test(self.dir)
         test_acc = test.test(train.mean, train.std, final_model)
         print("Test accuracy: " + str(test_acc))
+
+class NonLinearSVM():
+    pass
 
 
