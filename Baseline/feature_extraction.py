@@ -32,11 +32,11 @@ def extract_mfcc(dataset='train'):
         file_name = file_name.rstrip('\n')
         file_path = data_path + file_name
         #print file_path
-        y, sr = librosa.load(file_path, sr=22050)
+        y, sr = librosa.load(file_path, sr=22050)#y:(88200,) for all file
 
 
         ##### Method 1
-        mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=MFCC_DIM)
+        mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=MFCC_DIM)#mfcc: (20, 173) for all file of equal length 4s
 
         ##### Method 2
         """
@@ -76,8 +76,8 @@ if __name__ == '__main__':
     extract_mfcc(dataset=phase)
     util.finish_measure()
 
-    #validation
-    phase = 'validation'
+    #valid
+    phase = 'valid'
     util.start_measure(task + ' ' + phase)
     extract_mfcc(dataset=phase)
     util.finish_measure()
