@@ -4,7 +4,7 @@ method1_path = "/home/sunghee/PycharmProjects/music_classification/method1_is_ba
 method2_path = "/home/sunghee/PycharmProjects/music_classification/method2_svm_/"
 
 # input data path
-data_path = '/home/sunghee/PycharmProjects/music_classification/example_dataset/'
+data_path = '/home/sunghee/Documents/GCT634/HW1_dataset/dataset/'
 
 # file paths relative to expriment root path
 mfcc_path = 'mfcc/'
@@ -37,6 +37,7 @@ def report(dir):
 
 data=('train', 'valid', 'test')
 
-train_Y = np.array([1, 2, 3])
-valid_Y = np.array([1, 2, 3])
-test_Y = np.array([1, 2, 3])
+cls = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+train_Y = np.repeat(cls, 100)
+valid_Y = np.repeat(cls, 20)
+test_Y = np.repeat(cls, 20)

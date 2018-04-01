@@ -9,6 +9,9 @@ class Counter():
     file_name = "./time_measure"
     unit = "ms"
 
+    def __init__(self, file_name="./time_measure"):
+        self.file_name = file_name
+
     def start_measure(self, task_name):
         self.task = task_name
         self.start = current_milli_time()
