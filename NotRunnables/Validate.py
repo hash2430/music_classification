@@ -8,17 +8,19 @@ import numpy as np
 import os
 
 class Validate():
-    dir = ""
+    mean_mfcc_dir = ""
+    refportFile = ""
 
-    def __init__(self, dir):
-        self.dir = dir
+    def __init__(self, mean_mfcc_dir, reportFile):
+        self.mean_mfcc_dir = mean_mfcc_dir
+        self.reportFile = reportFile
 
     # hyper_params list is for reporting purpose only
     # since clfs are already calculated in 'Train' class
     def validate(self, hyper_params, clfs, train_X_mean, train_X_std):
 
         # load validation set
-        valid_file = Path.mean_mfcc_file(self.dir, Path.data[1])
+        valid_file = Path.mean_mfcc_file(self.mean_mfcc_dir, Path.data[1])
         valid_X = np.load(valid_file)
 
         # feature normalization
@@ -40,7 +42,7 @@ class Validate():
 
         # ToDo: report file formatting
         # report validation result as file output
-        save_file = Path.report(self.dir)
+        save_file = self.reportFile
         if not os.path.exists(os.path.dirname(save_file)):
             os.makedirs(os.path.dirname(save_file))
 

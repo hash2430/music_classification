@@ -19,10 +19,10 @@ def feature_file(file_name):
     return data_path + file_name.rstrip('\n')
 
 def mfcc_file(dir, file_name):
-    return dir + mfcc_path + file_name.rstrip('\n')
+    return dir + file_name.rstrip('\n')
 
 def mean_mfcc_file(dir, phase):
-    val = dir + mfcc_mean_path
+    val = dir
     val += phase
     val += '_mfcc_mean.npy'
     return val

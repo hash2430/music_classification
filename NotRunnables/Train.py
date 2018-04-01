@@ -9,15 +9,15 @@ import numpy as np
 #from NotRunnables import *
 
 class Train():
-    dir = ""
+    inputDir = ""
     mean = 0
     std = 0
-    def __init__(self, dir):
-        self.dir = dir
+    def __init__(self, inputDir):
+        self.inputDir = inputDir
 
     def linear_svm(self, hyper_param):
         # load training feature, validation feature
-        train_x_file = Path.mean_mfcc_file(self.dir, Path.data[0])
+        train_x_file = Path.mean_mfcc_file(self.inputDir, Path.data[0])
         train_X = np.load(train_x_file)
 
         # feature normalization

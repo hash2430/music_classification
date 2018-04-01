@@ -12,10 +12,13 @@ import matplotlib.pyplot as plt
 # for visualization & to be used as feature
 # save as file
 class FeatureSummary():
-    dir = ""
+    inputDir = ""
+    outputDir = ""
 
-    def __init__(self, dir):
-        self.dir = dir
+    def __init__(self, mfcc_dim, inputDir, outputDir):
+        self.inputDir = inputDir
+        self.outputDir = outputDir
+        self.mfcc_dim = mfcc_dim
     #todo: 데이터 크기를 미리 Path에 정의해놓자
     def mean_mfcc(self, n):
         phase = Path.data[n]
@@ -24,7 +27,7 @@ class FeatureSummary():
         sample_size = sum(1 for line in f)
         f.close()
         f = open(list_file, 'r')
-        mfcc_mat = np.zeros(shape=(FeatureExtraction.MFCC_DIM, sample_size))
+        mfcc_mat = np.zeros(shape=(self.mfcc_dim, sample_size))
         #todo: progress check line을 프린트할까(i 변수 사용)
         i = 0
 
@@ -32,7 +35,7 @@ class FeatureSummary():
             # load mfcc file
             file_name = file_name.rstrip('\n')
             file_name = file_name.replace('.wav', '.npy')
-            mfcc_file = Path.mfcc_file(self.dir, file_name)
+            mfcc_file = Path.mfcc_file(self.inputDir + phase + '/', file_name)
             mfcc = np.load(mfcc_file)
 
             # mean pooling
@@ -42,7 +45,7 @@ class FeatureSummary():
             i = i + 1
 
         f.close();
-        save_file = Path.mean_mfcc_file(self.dir, phase)
+        save_file = Path.mean_mfcc_file(self.outputDir, phase)
         if not os.path.exists(os.path.dirname(save_file)):
             os.makedirs(os.path.dirname(save_file))
         np.save(save_file, mfcc_mat)
@@ -52,9 +55,9 @@ class FeatureSummary():
     # todo: 그림 이쁘게 그리기
     def visualize(self, n):
         phase = Path.data[n]
-        mean_mfcc_file = Path.mean_mfcc_file(self.dir, phase)
+        mean_mfcc_file = Path.mean_mfcc_file(self.outputDir, phase)
         mean_mfcc = np.load(mean_mfcc_file)
-        save_file = Path.mean_mfcc_visualization_file(self.dir, phase)
+        save_file = Path.mean_mfcc_visualization_file(self.outputDir, phase)
         if not os.path.exists(os.path.dirname(save_file)):
             os.makedirs(os.path.dirname(save_file))
 

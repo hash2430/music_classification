@@ -9,15 +9,19 @@ import os
 import numpy as np
 #from NotRunnables import *
 
-MFCC_DIM = 20
 class FeatureExtraction():
-    dir = ""
+    outputDir = ""
+    sr = 22050
+    mfcc_dim = 20
 
-    def __init__(self, dir):
-        self.dir = dir
+    def __init__(self, outputDir, sr=22050, mfcc_dim=20):
+        self.outputDir = outputDir
+        self.sr = sr
+        self.mfcc_dim = mfcc_dim
 
     def extract_mfcc1(self, phase):
-        list_file = Path.feature_file_list(Path.data[phase])
+        phase = Path.data[phase]
+        list_file = Path.feature_file_list(phase)
         f = open(list_file, 'r')
 
         i = 0
@@ -30,14 +34,14 @@ class FeatureExtraction():
             # load audio file
             file_path = Path.feature_file(file_name)
             # print file_path
-            y, sr = librosa.load(file_path, sr=22050)
+            y, sr = librosa.load(file_path, sr=self.sr)
 
             ##### Method 1
-            mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=MFCC_DIM)
+            mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=self.mfcc_dim)
 
             # save mfcc as a file
             file_name = file_name.replace('.wav', '.npy')
-            save_file = Path.mfcc_file(self.dir, file_name)
+            save_file = Path.mfcc_file(self.outputDir + phase + '/', file_name)
 
             if not os.path.exists(os.path.dirname(save_file)):
                 os.makedirs(os.path.dirname(save_file))
@@ -59,7 +63,7 @@ class FeatureExtraction():
             file_path = Path.feature_file(file_name)
 
             # print file_path
-            y, sr = librosa.load(file_path, sr=22050)
+            y, sr = librosa.load(file_path, sr=self.sr)
 
             ##### Method 2
             # STFT
@@ -81,7 +85,7 @@ class FeatureExtraction():
 
             # save mfcc as a file
             file_name = file_name.replace('.wav', '.npy')
-            save_file = Path.mfcc_file(self.dir, file_name)
+            save_file = Path.mfcc_file(self.outputDir, file_name)
 
             if not os.path.exists(os.path.dirname(save_file)):
                 os.makedirs(os.path.dirname(save_file))
