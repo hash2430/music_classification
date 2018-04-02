@@ -35,5 +35,6 @@ class Test():
         test_data_size = test_Y_hat.shape[0]
         acc = np.sum((test_Y_hat == test_Y))/ test_data_size*100.0
         acc = "Test Accuracy: " + str(acc) + '%'
+        file.write('\n********** Test Report **********\n')
         file.write(acc)
         return acc

@@ -10,10 +10,12 @@ import numpy as np
 
 class Train():
     inputDir = ""
+    reportFile = ""
     mean = 0
     std = 0
-    def __init__(self, inputDir):
+    def __init__(self, inputDir, reportFile):
         self.inputDir = inputDir
+        self.reportFile = reportFile
 
     def linear_svm(self, hyper_param):
         # load training feature, validation feature

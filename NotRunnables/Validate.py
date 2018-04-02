@@ -47,15 +47,20 @@ class Validate():
             os.makedirs(os.path.dirname(save_file))
 
         report_file = open(save_file, 'w')
-        report_file.write('Validation Result')
-        report_file.write('hyper parameters')
-        report_file.write(str(hyper_params))
-        report_file.write('models')
-        report_file.write(str(clfs))
-        report_file.write('accuracy')
-        report_file.write(str(accuracy_list))
-        report_file.write('best model')
-        report_file.write(str(final_model))
+        report_file.write('********** Validation Report **********\n')
+        report_file.write('== hyper parameters ==\n')
+        for param in hyper_params:
+            report_file.write('%8.6f'%(param))
+
+        report_file.write('\n')
+        # report_file.write('== models ==\n')
+        # report_file.write(str(clfs))
+        report_file.write('== accuracy ==\n')
+        for acc in accuracy_list:
+            report_file.write('%8.6f'%(acc) + '%' + '\n')
+        report_file.write('== best model ==\n')
+        report_file.write(str(final_model) + '\n\n')
+        report_file.write('Validation Accuracy: ' + str(accuracy_list[best_model_idx]) + '%' + '\n')
 
         return final_model, accuracy_list[best_model_idx]
 
