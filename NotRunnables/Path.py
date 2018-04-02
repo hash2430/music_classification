@@ -1,7 +1,7 @@
 import numpy as np
 # experiment root path
-method1_path = "/home/sunghee/PycharmProjects/music_classification/method1_is_baseline/"
-method2_path = "/home/sunghee/PycharmProjects/music_classification/method2_svm_/"
+method1_path = "/home/sunghee/PycharmProjects/music_classification/method1_baseline/"
+method2_path = "/home/sunghee/PycharmProjects/music_classification/method2_nonlinear_svm/"
 
 # input data path
 data_path = '/home/sunghee/Documents/GCT634/HW1_dataset/dataset/'
@@ -42,6 +42,13 @@ def mean_var_mfcc_file(dir, phase):
     val += '_mfcc_mean_var.npy'
     return val
 
+def flat_mfcc_file(dir, phase):
+    val = dir
+    val += phase
+    val += 'flat_mfcc.npy'
+    return val
+
+
 def report(dir):
     return dir + report_path + 'report'
 
@@ -53,3 +60,4 @@ cls = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 train_Y = np.repeat(cls, 100)
 valid_Y = np.repeat(cls, 20)
 test_Y = np.repeat(cls, 20)
+num_of_frames = 173

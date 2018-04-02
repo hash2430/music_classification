@@ -119,8 +119,8 @@ class LargerMfccDim(Classification):
 
 class MfccVarAdded(Classification):
     var_mfcc_dir = ""
-
     concat_dir = ""
+
     def __init__(self, mfcc_dir, mean_mfcc_dir, var_mfcc_dir, concat_dir, report_file):
         self.mfcc_dir = mfcc_dir
         self.mean_mfcc_dir = mean_mfcc_dir
@@ -162,26 +162,33 @@ class MfccVarAdded(Classification):
         test_acc = test.test(train.mean, train.std, final_model)
         print("Test accuracy: " + str(test_acc))
 
-class MfccAll(Classification):
+class MfccDeltaAdded(Classification):
+    mean_var_mfcc_dir = ""
+    concat_dir = ""
+    def __init(self, mfcc_dir, mean_mfcc_dir, mean_var_mfcc_dir, concat_dir, report_file):
+        self.mean_var_mfcc_dir = mean_var_mfcc_dir
+        self.concat_dir = concat_dir
+
     def run(self):
         # feature extraction and summary
         featureExtraction = FeatureExtraction(self.mfcc_dir, mfcc_dim=60)
-        featureSummary = FeatureSummary.FeatureSummary(featureExtraction.mfcc_dim, self.mfcc_dir, self.mean_mfcc_dir)
-
-#Todo: featureSummary.concat 함수 만들기
-        #for phase in range(3):
+        featureDelta = FeatureSummary.FeatureSummary(60, )
+        concatenator = FeatureSummary.FeatureConcatenator(self.mean_mfcc_dir, self.var_mfcc_dir, self.concat_dir)
+        for phase in range(3):
             # featureExtraction.extract_mfcc1(phase)
-            # featureSummary.mean_mfcc(phase)
-            # featureSummary.visualize(phase)
+            # featureMeanSummary.mean_mfcc(phase)
+            # featureMeanSummary.visualize(phase)
+            #featureVarSummary.var_mfcc(phase)
+            concatenator.concat(phase)
 
         # train
-        train = Train.Train(Path.mean_mfcc_file(self.mean_mfcc_dir, 0), self.report_file)
+        train = Train.Train(Path.mean_var_mfcc_file(self.concat_dir, Path.data[0]), self.report_file)
         # todo: hyperparam를 하나 이상의 파라미터를 가질 수 있게 확장할 것(조합)
         # iterate among hyper params
         hyper_params = [0.0001]
         models = []
         for hyper_param in hyper_params:
-            model = train.nonlinear_svm_all_mfcc()
+            model = train.nonlinear_svm()
             models.append(model)
 
         # todo: train_X_mean, train_X_std를 어디 저장할까?
@@ -190,6 +197,42 @@ class MfccAll(Classification):
                                                         train.mean, train.std)
         print("Validation accuracy: " + str(validation_acc))
 
-        test = Test.Test(self.mfcc_dir, self.report_file)
+        test = Test.Test(Path.mean_var_mfcc_file(self.concat_dir, Path.data[2]), self.report_file)
+        test_acc = test.test(train.mean, train.std, final_model)
+        print("Test accuracy: " + str(test_acc))
+
+class MfccAll(Classification):
+    flat_mfcc_dir = ""
+
+    def __init__(self, mfcc_dir, flat_mfcc_dir, report_file):
+        self.mfcc_dir = mfcc_dir
+        self.flat_mfcc_dir = flat_mfcc_dir
+        self.report_file = report_file
+
+    def run(self):
+        # feature extraction and summary
+        featureExtraction = FeatureExtraction(self.mfcc_dir, mfcc_dim=60)
+        featureSummary = FeatureSummary.FeatureSummary(featureExtraction.mfcc_dim, self.mfcc_dir, self.flat_mfcc_dir)
+
+        for phase in range(3):
+            featureSummary.flatten(phase)
+
+        # train
+        train = Train.Train(Path.flat_mfcc_file(self.flat_mfcc_dir, Path.data[0]), self.report_file)
+        # todo: hyperparam를 하나 이상의 파라미터를 가질 수 있게 확장할 것(조합)
+        # iterate among hyper params
+        hyper_params = [0.0001]
+        models = []
+        for hyper_param in hyper_params:
+            model = train.nonlinear_svm()
+            models.append(model)
+
+        # todo: train_X_mean, train_X_std를 어디 저장할까?
+        validate = Validate.Validate(Path.flat_mfcc_file(self.flat_mfcc_dir, Path.data[1]), self.report_file)
+        final_model, validation_acc = validate.validate(hyper_params, models,
+                                                        train.mean, train.std)
+        print("Validation accuracy: " + str(validation_acc))
+
+        test = Test.Test(Path.flat_mfcc_file(self.flat_mfcc_dir, Path.data[2]), self.report_file)
         test_acc = test.test(train.mean, train.std, final_model)
         print("Test accuracy: " + str(test_acc))
