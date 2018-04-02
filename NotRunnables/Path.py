@@ -30,6 +30,18 @@ def mean_mfcc_file(dir, phase):
 def mean_mfcc_visualization_file(dir, phase):
     return dir + mfcc_mean_visualization_path + phase + '_mfcc_visualization.png'
 
+def var_mfcc_file(dir, phase):
+    val = dir
+    val += phase
+    val += '_mfcc_var.npy'
+    return val
+
+def mean_var_mfcc_file(dir, phase):
+    val = dir
+    val += phase
+    val += '_mfcc_mean_var.npy'
+    return val
+
 def report(dir):
     return dir + report_path + 'report'
 

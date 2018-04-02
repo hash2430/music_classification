@@ -16,7 +16,7 @@ class Test():
 
     def test(self, train_X_mean, train_X_std, model):
         # load test data
-        test_mean_mfcc_file = Path.mean_mfcc_file(self.mean_mfcc_dir, Path.data[2])
+        test_mean_mfcc_file = self.mean_mfcc_dir
         test_X = np.load(test_mean_mfcc_file)
 
         # normalize test data

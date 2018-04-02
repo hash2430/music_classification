@@ -20,7 +20,7 @@ class Validate():
     def validate(self, hyper_params, clfs, train_X_mean, train_X_std):
 
         # load validation set
-        valid_file = Path.mean_mfcc_file(self.mean_mfcc_dir, Path.data[1])
+        valid_file = self.mean_mfcc_dir
         valid_X = np.load(valid_file)
 
         # feature normalization
