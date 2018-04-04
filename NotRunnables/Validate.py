@@ -50,7 +50,7 @@ class Validate():
         report_file.write('********** Validation Report **********\n')
         report_file.write('== hyper parameters ==\n')
         for param in hyper_params:
-            report_file.write('%8.6f'%(param))
+            report_file.write(str(param) + "\n")
 
         report_file.write('\n')
         # report_file.write('== models ==\n')
