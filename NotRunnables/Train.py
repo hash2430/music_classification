@@ -4,6 +4,7 @@ from NotRunnables import Path, Normalize
 
 from sklearn.linear_model import SGDClassifier
 from sklearn import svm
+from sklearn.neighbors import KNeighborsClassifier
 
 import numpy as np
 #from NotRunnables import *
@@ -61,7 +62,33 @@ class Train():
         train_Y = Path.train_Y
 
         # Choose a classifier (here, linear SVM)
-        clf = svm.NuSVC()
+        clf = svm.NuSVC( nu=0.5, kernel='rbf', degree=3, gamma='auto', coef0=0.0,
+                 shrinking=True, probability=False, tol=1e-3, cache_size=200,
+                 class_weight=None, verbose=False, max_iter=-1,
+                 decision_function_shape='ovr', random_state=None)
+
+        # train
+        clf.fit(train_X, train_Y)
+        return clf
+
+    def knn(self, k):
+        train_x_file = self.inputDir
+        train_X = np.load(train_x_file)
+
+        # feature normalization
+        train_X = train_X.T
+        train_X_mean = np.mean(train_X, axis=0)
+        self.mean = train_X_mean
+        train_X_std = np.std(train_X, axis=0)
+        self.std = train_X_std
+        train_X = Normalize.normalize(train_X, self.mean, self.std)
+
+        # ToDo: 모든 데이터를 로드할 때는 라벨도 고쳐야함
+        # generate labels
+        train_Y = Path.train_Y
+
+        # Choose a classifier (here, linear SVM)
+        clf = KNeighborsClassifier(n_neighbors=k)
 
         # train
         clf.fit(train_X, train_Y)

@@ -98,6 +98,48 @@ class FeatureSummary():
         np.save(save_file, mfcc_mat)
         return mfcc_mat #(mfcc_dim, num of files)
 
+    def delta_mfcc(self, n):
+        phase = Path.data[n]
+        list_file = Path.feature_file_list(phase)
+        f = open(list_file, 'r')
+        sample_size = sum(1 for line in f)
+        f.close()
+        f = open(list_file, 'r')
+        mfcc_delta_mean_mat = np.zeros(shape=(self.mfcc_dim, sample_size))
+        mfcc_delta_var_mat = np.zeros(shape=(self.mfcc_dim, sample_size))
+        mfcc_delta_delta_mean_mat = np.zeros(shape=(self.mfcc_dim, sample_size))
+        mfcc_delta_delta_var_mat = np.zeros(shape=(self.mfcc_dim, sample_size))
+        mfcc_mat = np.zeros(shape=(self.mfcc_dim * 4, sample_size))
+        #todo: progress check line을 프린트할까(i 변수 사용)
+        i = 0
+
+        for file_name in f:
+            # load mfcc file
+            file_name = file_name.rstrip('\n')
+            file_name = file_name.replace('.wav', '.npy')
+            mfcc_file = Path.mfcc_file(self.inputDir + phase + '/', file_name)
+            mfcc = np.load(mfcc_file)
+
+            delta = librosa.feature.delta(mfcc)
+            delta_mean = np.mean(delta, 1)
+            mfcc_delta_mean_mat[:, i] = delta_mean#(60,1000)
+            delta_var = np.std(delta, 1)
+            mfcc_delta_var_mat[:, i] = delta_var
+
+            delta_delta = librosa.feature.delta(mfcc, order=2)
+            delta_delta_mean = np.mean(delta_delta, 1)
+            mfcc_delta_delta_mean_mat[:, i] = delta_delta_mean#(60,1000)
+            delta_delta_var = np.std(delta_delta, 1)
+            mfcc_delta_delta_var_mat[:, i] = delta_delta_var
+            i = i + 1
+        f.close();
+        mfcc_mat = np.concatenate((mfcc_delta_mean_mat, mfcc_delta_var_mat, mfcc_delta_delta_mean_mat, mfcc_delta_delta_var_mat), axis=0)
+        save_file = Path.delta_mfcc_file(self.outputDir, phase)
+        if not os.path.exists(os.path.dirname(save_file)):
+            os.makedirs(os.path.dirname(save_file))
+        np.save(save_file, mfcc_mat)
+        return mfcc_mat #(mfcc_dim, num of files)
+
     def flatten(self, n):
         phase = Path.data[n]
         list_file = Path.feature_file_list(phase)
@@ -134,25 +176,16 @@ class FeatureSummary():
 class FeatureConcatenator():
     input1_dir = ""
     input2_dir = ""
-    output_dir = ""
 
-    def __init__(self, input1_dir, input2_dir, output_dir):
-        self.input1_dir = input1_dir
-        self.input2_dir = input2_dir
-        self.output_dir = output_dir
-
-    def concat(self, n):
+    def __init__(self):
+        pass
+    def concat(self, input1, input2, save_file):
         # load training feature, validation feature
-        phase = Path.data[n]
-        input1 = Path.mean_mfcc_file(self.input1_dir, phase)
         input1 = np.load(input1)
-
-        input2 = Path.var_mfcc_file(self.input2_dir, phase)
         input2 = np.load(input2)
 
         output = np.concatenate((input1, input2), axis=0)
 
-        save_file = Path.mean_var_mfcc_file(self.output_dir, phase)
         if not os.path.exists(os.path.dirname(save_file)):
             os.makedirs(os.path.dirname(save_file))
         np.save(save_file, output)

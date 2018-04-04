@@ -1,7 +1,8 @@
 import numpy as np
 # experiment root path
 method1_path = "/home/sunghee/PycharmProjects/music_classification/method1_baseline/"
-method2_path = "/home/sunghee/PycharmProjects/music_classification/method2_nonlinear_svm/"
+method2_path = "/home/sunghee/PycharmProjects/music_classification/method2_feature_summary_nonlinear_svm/"
+method3_path = "/home/sunghee/PycharmProjects/music_classification/method3_feature_extraction_nonlinear_svm/"
 
 # input data path
 data_path = '/home/sunghee/Documents/GCT634/HW1_dataset/dataset/'
@@ -42,17 +43,24 @@ def mean_var_mfcc_file(dir, phase):
     val += '_mfcc_mean_var.npy'
     return val
 
+def delta_mfcc_file(dir, phase):
+    val = dir
+    val += phase
+    val += '_mfcc_delta.npy'
+    return val
+
+def mean_var_delta_mean_mfcc_file(dir, phase):
+    val = dir
+    val += phase
+    val += '_mfcc_mean_var_delta.npy'
+    return val
+
+
 def flat_mfcc_file(dir, phase):
     val = dir
     val += phase
     val += 'flat_mfcc.npy'
     return val
-
-
-def report(dir):
-    return dir + report_path + 'report'
-
-
 
 data=('train', 'valid', 'test')
 

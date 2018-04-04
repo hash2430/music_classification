@@ -67,27 +67,27 @@ class FeatureExtraction():
 
             ##### Method 2
             # STFT
-            S = librosa.core.stft(y, n_fft=1024, hop_length=512, win_length=1024)
+            S = librosa.core.stft(y, n_fft=1024, hop_length=512, win_length=1023)
 
             # power spectrum
             D = np.abs(S)**2
 
             # mel spectrogram (512 --> 40)
-            mel_basis = librosa.filters.mel(sr, 1024, n_mels=40)
+            mel_basis = librosa.filters.mel(sr, 1024, n_mels=256)
             mel_S = np.dot(mel_basis, D)
 
             #log compression
             log_mel_S = librosa.power_to_db(mel_S)
 
             # mfcc (DCT)
-            mfcc = librosa.feature.mfcc(S=log_mel_S, n_mfcc=13)
+            mfcc = librosa.feature.mfcc(S=log_mel_S, n_mfcc=60)
             mfcc = mfcc.astype(np.float32)    # to save the memory (64 to 32 bits)
 
             # save mfcc as a file
             file_name = file_name.replace('.wav', '.npy')
-            save_file = Path.mfcc_file(self.outputDir, file_name)
-
-            if not os.path.exists(os.path.dirname(save_file)):
+            save_file = Path.mfcc_file(self.outputDir + Path.data[phase] + '/', file_name)
+            dir_part = os.path.dirname(save_file)
+            if not os.path.exists(dir_part):
                 os.makedirs(os.path.dirname(save_file))
             np.save(save_file, mfcc)
 
