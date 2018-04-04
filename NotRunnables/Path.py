@@ -1,8 +1,8 @@
 import numpy as np
 # experiment root path
-method1_path = "/home/sunghee/PycharmProjects/music_classification/method1_baseline/"
-method2_path = "/home/sunghee/PycharmProjects/music_classification/method2_feature_summary_nonlinear_svm/"
-method3_path = "/home/sunghee/PycharmProjects/music_classification/method3_feature_extraction_nonlinear_svm/"
+method1_path = "/home/sunghee/PycharmProjects/music_classification/approach1_learning_algorithm_variation/"
+method2_path = "/home/sunghee/PycharmProjects/music_classification/approach2_feature_extraction_variation/"
+method3_path = "/home/sunghee/PycharmProjects/music_classification/approach3_feature_summary_variation/"
 
 # input data path
 data_path = '/home/sunghee/Documents/GCT634/HW1_dataset/dataset/'
