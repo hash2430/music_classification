@@ -46,8 +46,8 @@ class Validate():
         if not os.path.exists(os.path.dirname(save_file)):
             os.makedirs(os.path.dirname(save_file))
 
-        report_file = open(save_file, 'w')
-        report_file.write('********** Validation Report **********\n')
+        report_file = open(save_file, 'a')
+        report_file.write('\n********** Validation Report **********\n')
         report_file.write('== hyper parameters ==\n')
         for param in hyper_params:
             report_file.write(str(param) + "\n")

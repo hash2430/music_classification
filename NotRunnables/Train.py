@@ -1,12 +1,13 @@
 # input: mean mfcc files, variance mfcc files
 # output: hyperparameters and models files
-from NotRunnables import Path, Normalize
+from NotRunnables import Path, Normalize, Counter
 
 from sklearn.linear_model import SGDClassifier
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
 
 import numpy as np
+import os
 #from NotRunnables import *
 
 class Train():
@@ -17,6 +18,11 @@ class Train():
     def __init__(self, inputDir, reportFile):
         self.inputDir = inputDir
         self.reportFile = reportFile
+        if not os.path.exists(os.path.dirname(self.reportFile)):
+            os.makedirs(os.path.dirname(self.reportFile))
+        file = open(self.reportFile, 'w')
+        file.write('********** Train Report **********\n')
+        file.write("== Training time ==\n")
 
     def linear_svm(self, hyper_param):
         # load training feature, validation feature
@@ -41,7 +47,11 @@ class Train():
                             max_iter=1000, penalty="l2", random_state=0)
 
         # train
+        counter = Counter.Counter(self.reportFile)
+        counter.start_measure("")
         clf.fit(train_X, train_Y)
+        counter.finish_measure()
+
 
         return clf
 
@@ -68,7 +78,10 @@ class Train():
                  decision_function_shape='ovr', random_state=None)
 
         # train
+        counter = Counter.Counter(self.reportFile)
+        counter.start_measure("")
         clf.fit(train_X, train_Y)
+        counter.finish_measure()
         return clf
 
     def knn(self, k):
@@ -91,5 +104,8 @@ class Train():
         clf = KNeighborsClassifier(n_neighbors=k)
 
         # train
+        counter = Counter.Counter(self.reportFile)
+        counter.start_measure("")
         clf.fit(train_X, train_Y)
+        counter.finish_measure()
         return clf

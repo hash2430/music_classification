@@ -20,7 +20,7 @@ class Counter():
     def finish_measure(self):
         self.finish = current_milli_time()
         self.span = self.finish - self.start
-        result_string = self.task + ": " + str(self.span) + " " + self.unit
+        result_string = self.task + str(self.span) + " " + self.unit + '\n'
 
         with open(self.file_name, 'a') as file:
             file.write(result_string)
