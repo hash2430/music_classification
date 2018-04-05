@@ -55,7 +55,7 @@ class Train():
 
         return clf
 
-    def nonlinear_svm(self):
+    def nonlinear_svm(self, kernel):
         train_x_file = self.inputDir
         train_X = np.load(train_x_file)
 
@@ -72,7 +72,7 @@ class Train():
         train_Y = Path.train_Y
 
         # Choose a classifier (here, linear SVM)
-        clf = svm.NuSVC( nu=0.5, kernel='rbf', degree=3, gamma='auto', coef0=0.0,
+        clf = svm.NuSVC( nu=0.5, kernel=kernel, degree=3, gamma='auto', coef0=0.0,
                  shrinking=True, probability=False, tol=1e-3, cache_size=200,
                  class_weight=None, verbose=False, max_iter=-1,
                  decision_function_shape='ovr', random_state=None)

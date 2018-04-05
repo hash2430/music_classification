@@ -59,10 +59,10 @@ class NonLinearSVM(Classification):
         train = Train.Train(Path.mean_mfcc_file(self.input1_dir, Path.data[0]), self.report_file)
         # todo: hyperparam를 하나 이상의 파라미터를 가질 수 있게 확장할 것(조합)
         # iterate among hyper params
-        hyper_params = [0.0001, 0.001, 0.01, 0.1, 1, 10]
+        hyper_params = ['rbf', 'poly', 'sigmoid']
         models = []
         for hyper_param in hyper_params:
-            model = train.nonlinear_svm()
+            model = train.nonlinear_svm(hyper_param)
             models.append(model)
 
 
@@ -119,10 +119,10 @@ class LargerMfccDim(Classification):
         train = Train.Train(Path.mean_mfcc_file(self.input1_dir, Path.data[0]), self.report_file)
         # todo: hyperparam를 하나 이상의 파라미터를 가질 수 있게 확장할 것(조합)
         # iterate among hyper params
-        hyper_params = [0.0001, 0.001, 0.01, 0.1, 1, 10]
+        hyper_params = ['rbf', 'poly', 'sigmoid']
         models = []
         for hyper_param in hyper_params:
-            model = train.nonlinear_svm()
+            model = train.nonlinear_svm(hyper_param)
             models.append(model)
 
         # todo: train_X_mean, train_X_std를 어디 저장할까?
@@ -162,10 +162,10 @@ class MfccVarAdded(Classification):
         train = Train.Train(Path.mean_var_mfcc_file(self.concat_dir, Path.data[0]), self.report_file)
         # todo: hyperparam를 하나 이상의 파라미터를 가질 수 있게 확장할 것(조합)
         # iterate among hyper params
-        hyper_params = [0.0001]
+        hyper_params = ['rbf', 'poly', 'sigmoid']
         models = []
         for hyper_param in hyper_params:
-            model = train.nonlinear_svm()
+            model = train.nonlinear_svm(hyper_param)
             models.append(model)
 
         # todo: train_X_mean, train_X_std를 어디 저장할까?
@@ -194,10 +194,10 @@ class MfccDeltaAdded(MfccVarAdded):
         train = Train.Train(Path.mean_var_delta_mean_mfcc_file(self.concat_dir, Path.data[0]), self.report_file)
         # todo: hyperparam를 하나 이상의 파라미터를 가질 수 있게 확장할 것(조합)
         # iterate among hyper params
-        hyper_params = [0.0001]
+        hyper_params = ['rbf', 'poly', 'sigmoid']
         models = []
         for hyper_param in hyper_params:
-            model = train.nonlinear_svm()
+            model = train.nonlinear_svm(hyper_param)
             models.append(model)
 
         # todo: train_X_mean, train_X_std를 어디 저장할까?
@@ -230,10 +230,10 @@ class MfccAll(Classification):
         train = Train.Train(Path.flat_mfcc_file(self.flat_mfcc_dir, Path.data[0]), self.report_file)
         # todo: hyperparam를 하나 이상의 파라미터를 가질 수 있게 확장할 것(조합)
         # iterate among hyper params
-        hyper_params = [0.0001]
+        hyper_params = ['rbf', 'poly', 'sigmoid']
         models = []
         for hyper_param in hyper_params:
-            model = train.nonlinear_svm()
+            model = train.nonlinear_svm(hyper_param)
             models.append(model)
 
         # todo: train_X_mean, train_X_std를 어디 저장할까?
@@ -268,10 +268,10 @@ class FEStft(MfccVarAdded):
         train = Train.Train(Path.mean_var_mfcc_file(self.concat_dir, Path.data[0]), self.report_file)
         # todo: hyperparam를 하나 이상의 파라미터를 가질 수 있게 확장할 것(조합)
         # iterate among hyper params
-        hyper_params = [0.0001]
+        hyper_params = ['rbf', 'poly', 'sigmoid']
         models = []
         for hyper_param in hyper_params:
-            model = train.nonlinear_svm()
+            model = train.nonlinear_svm(hyper_param)
             models.append(model)
 
         # todo: train_X_mean, train_X_std를 어디 저장할까?
